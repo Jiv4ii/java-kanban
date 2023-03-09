@@ -1,3 +1,8 @@
+import entities.EpicTask;
+import entities.SubTask;
+import entities.Task;
+import logic.TaskManager;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -27,7 +32,7 @@ public class Main {
 
         task2 = new Task("Сделать Таск", "Сделать, сделать",  "IN_PROGRESS", 1);
         taskManager.updateTask(task2);
-        subTask2 = new SubTask(5, "Закончить ЕпикТаск", "Закончить, Закончить", "DONE",4);
+        subTask2 = new SubTask(2, "Закончить ЕпикТаск", "Закончить, Закончить", "DONE",4);
         taskManager.updateSubTask(subTask2);
 
         System.out.println(taskManager.showTasksList().toString());
