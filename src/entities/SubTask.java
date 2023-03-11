@@ -1,7 +1,7 @@
 package entities;
 
 public class SubTask extends Task {
-    int epicId;
+   protected int epicId;
 
     @Override
     public String toString() {

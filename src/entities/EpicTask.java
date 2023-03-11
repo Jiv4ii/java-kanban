@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class EpicTask extends Task {
 
-    ArrayList<SubTask> getEpicsSubTasks;
+    protected ArrayList<SubTask> getEpicsSubTasks;
 
     public ArrayList<SubTask> getEpicsSubTasks() {
         return getEpicsSubTasks;

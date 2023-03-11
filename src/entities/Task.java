@@ -2,10 +2,10 @@ package entities;
 
 public class Task {
 
-    String name;
-    String description;
-    String getStatus;
-    int id;
+    protected String name;
+    protected String description;
+    protected String getStatus;
+    protected int id;
 
     public Task(String name, String description, String status) {
         this.name = name;
@@ -53,7 +53,6 @@ public class Task {
     public void setId(int id) {
         this.id = id;
     }
-
 
 
     @Override

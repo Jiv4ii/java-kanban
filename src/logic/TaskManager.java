@@ -50,11 +50,12 @@ public class TaskManager {
     public void deleteAllSubTasks() {
         subTasks.clear();
         for (EpicTask value : epics.values()) {
+            value.getEpicsSubTasks().clear();
             updateEpicStatus(value);
         }
     }
 
-    public Object getById(int searchId) {
+    public Task getById(int searchId) {
 
         if (tasks.containsKey(searchId)) {
             return tasks.get(searchId);
@@ -94,20 +95,19 @@ public class TaskManager {
     }
 
     public void deleteById(int searchId) {
-        if (tasks.containsKey(searchId)) {
-            tasks.remove(searchId);
-            return;
-        }
         if (epics.containsKey(searchId)) {
             for (SubTask epicsSubTask : epics.get(searchId).getEpicsSubTasks()) {
                 subTasks.remove(epicsSubTask.getId());
             }
             epics.remove(searchId);
-            return;
         }
         if (subTasks.containsKey(searchId)) {
+            SubTask subTask = subTasks.get(searchId);
+            epics.get(subTask.getEpicId()).getEpicsSubTasks().remove(subTask);
+            updateEpicStatus(epics.get(subTask.getEpicId()));
             subTasks.remove(searchId);
         }
+        tasks.remove(searchId);
     }
 
     public void updateTask(Task task){
