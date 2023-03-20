@@ -13,7 +13,7 @@ public class EpicTask extends Task {
 
 
 
-    public EpicTask(String name, String description, String status) {
+    public EpicTask(String name, String description, Status status) {
         super(name, description, status);
         getEpicsSubTasks = new ArrayList<>();
 

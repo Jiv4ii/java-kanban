@@ -4,20 +4,20 @@ public class Task {
 
     protected String name;
     protected String description;
-    protected String getStatus;
+    protected Status status;
     protected int id;
 
-    public Task(String name, String description, String status) {
+    public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
-        this.getStatus = status;
+        this.status = status;
 
     }
 
-    public Task(String name, String description, String status, int id) {
+    public Task(String name, String description, Status status, int id) {
         this.name = name;
         this.description = description;
-        this.getStatus = status;
+        this.status = status;
         this.id = id;
 
     }
@@ -38,12 +38,12 @@ public class Task {
         this.description = description;
     }
 
-    public String getStatus() {
-        return getStatus;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatus(String status) {
-        this.getStatus = status;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public int getId() {
@@ -60,7 +60,7 @@ public class Task {
         return "entities.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", status='" + getStatus + '\'' +
+                ", status='" + status + '\'' +
                 ", id=" + id +
                 '}';
     }

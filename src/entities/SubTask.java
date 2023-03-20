@@ -3,16 +3,6 @@ package entities;
 public class SubTask extends Task {
    protected int epicId;
 
-    @Override
-    public String toString() {
-        return "SubTask{" +
-                "epicId=" + epicId +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", getStatus='" + getStatus + '\'' +
-                ", id=" + id +
-                '}';
-    }
 
     public int getEpicId() {
         return epicId;
@@ -22,13 +12,14 @@ public class SubTask extends Task {
         this.epicId = epicId;
     }
 
-    public SubTask(int epicId, String name, String description, String status) {
+    public SubTask(int epicId, String name, String description, Status status) {
         super(name, description, status);
         this.epicId = epicId;
     }
-    public SubTask(int epicId, String name, String description,  String status, int id) {
+    public SubTask(int epicId, String name, String description,  Status status, int id) {
         super(name, description, status);
         this.epicId = epicId;
         this.id = id;
     }
+
 }
