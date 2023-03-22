@@ -1,13 +1,10 @@
-package entities;
+package logic;
 
 
 import entities.EpicTask;
 import entities.Status;
 import entities.SubTask;
 import entities.Task;
-import logic.HistoryManager;
-import logic.Managers;
-import logic.TaskManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,13 +15,13 @@ public class InMemoryTaskManager implements TaskManager {
     int id = 0;
 
 
-    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
 
-    private HashMap<Integer, EpicTask> epics = new HashMap<>();
+    private final HashMap<Integer, EpicTask> epics = new HashMap<>();
 
-    private HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
 
-    private HistoryManager historyManager = Managers.getHistoryDefault();
+    private final HistoryManager historyManager = Managers.getHistoryDefault();
 
 
 

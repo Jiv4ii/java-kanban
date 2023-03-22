@@ -1,14 +1,13 @@
-package entities;
+package logic;
 
 import entities.Task;
-import logic.HistoryManager;
 
 import java.util.ArrayList;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
 
-    private ArrayList<Task> history = new ArrayList<>();
+    private final ArrayList<Task> history = new ArrayList<>();
 
     private static final int maxHistorySize = 10;
 

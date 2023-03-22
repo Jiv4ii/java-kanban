@@ -1,9 +1,8 @@
 package logic;
 
-import entities.InMemoryHistoryManager;
-import entities.InMemoryTaskManager;
+public  class Managers {
+    private Managers(){}
 
-public abstract class Managers {
     public static TaskManager getDefault(){
         return new InMemoryTaskManager();
     }
