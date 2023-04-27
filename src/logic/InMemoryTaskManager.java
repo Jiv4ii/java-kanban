@@ -24,8 +24,6 @@ public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager = Managers.getHistoryDefault();
 
 
-
-
     @Override
     public Collection<Task> showTasksList() {
 
@@ -45,18 +43,32 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllTasks() {
+        for (Task task : tasks.values()) {
+            historyManager.remove(task);
+        }
+
         tasks.clear();
     }
 
     @Override
     public void deleteAllEpics() {
+        for (Task task : epics.values()) {
+            historyManager.remove(task);
+        }
+
         epics.clear();
+
         deleteAllSubTasks();
     }
 
     @Override
     public void deleteAllSubTasks() {
+        for (Task task : subTasks.values()) {
+            historyManager.remove(task);
+        }
+
         subTasks.clear();
+
         for (EpicTask value : epics.values()) {
             value.getEpicsSubTasks().clear();
             updateEpicStatus(value);
@@ -83,7 +95,7 @@ public class InMemoryTaskManager implements TaskManager {
         return null;
     }
 
-    public HistoryManager getHistoryManager(){
+    public HistoryManager getHistoryManager() {
         return historyManager;
     }
 
@@ -119,16 +131,22 @@ public class InMemoryTaskManager implements TaskManager {
         if (epics.containsKey(searchId)) {
             for (SubTask epicsSubTask : epics.get(searchId).getEpicsSubTasks()) {
                 subTasks.remove(epicsSubTask.getId());
+                historyManager.remove(epicsSubTask);
             }
+            historyManager.remove(epics.get(searchId));
             epics.remove(searchId);
         }
         if (subTasks.containsKey(searchId)) {
             SubTask subTask = subTasks.get(searchId);
             epics.get(subTask.getEpicId()).getEpicsSubTasks().remove(subTask);
             updateEpicStatus(epics.get(subTask.getEpicId()));
+            historyManager.remove(subTasks.get(searchId));
             subTasks.remove(searchId);
         }
-        tasks.remove(searchId);
+        if (subTasks.containsKey(searchId)) {
+            tasks.remove(searchId);
+            historyManager.remove(tasks.get(searchId));
+        }
     }
 
     @Override
@@ -196,10 +214,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         epic.setStatus(Status.IN_PROGRESS);
         epics.put(epic.getId(), epic);
-
-
     }
-
 
 
 }
