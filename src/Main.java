@@ -2,6 +2,7 @@ import entities.EpicTask;
 import entities.Status;
 import entities.SubTask;
 import entities.Task;
+import interfaces.TaskManager;
 import logic.*;
 
 public class Main {
@@ -17,7 +18,7 @@ public class Main {
         SubTask subTask3 = new SubTask(2, "SIUUUUUU", "Вдох, SIUUUUU", Status.NEW);
 
         EpicTask epicTask2 = new EpicTask("Проявление радости", "Big thing",  Status.NEW);
-        
+
 
         taskManager.createTask(task);
         taskManager.createTask(task2);

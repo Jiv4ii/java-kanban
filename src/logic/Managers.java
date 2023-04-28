@@ -1,5 +1,8 @@
 package logic;
 
+import interfaces.HistoryManager;
+import interfaces.TaskManager;
+
 public  class Managers {
     private Managers(){}
 
@@ -7,7 +10,7 @@ public  class Managers {
         return new InMemoryTaskManager();
     }
 
-    public  static HistoryManager getHistoryDefault(){
+    public  static HistoryManager getHistory(){
         return new InMemoryHistoryManager();
     }
 

@@ -1,8 +1,9 @@
-package logic;
+package interfaces;
 
 import entities.EpicTask;
 import entities.SubTask;
 import entities.Task;
+import interfaces.HistoryManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
