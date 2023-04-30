@@ -5,16 +5,18 @@ import entities.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CustomLinkedList {
     private Node<Task> first;
     private Node<Task> last;
-    public int size;
+    private int size;
     private final HashMap<Integer,Node<Task>> map = new HashMap<>();
 
 
-
-
+    public int getSize() {
+        return size;
+    }
 
     void linkLast(Task element) {
         final Node<Task> oldLast = last;
@@ -23,7 +25,7 @@ public class CustomLinkedList {
         if (oldLast == null)
             first = newNode;
         else
-            oldLast.next = newNode;
+            oldLast.setNext(newNode);
         size++;
 
     }
@@ -37,37 +39,33 @@ public class CustomLinkedList {
     void removeNode(Node<Task> x) {
         if (x != null) {
 
-            Node<Task> next = x.next;
-            Node<Task> prev = x.prev;
+            Node<Task> next = x.getNext();
+            Node<Task> prev = x.getPrev();
 
             if (prev == null) {
                 first = next;
             } else {
-                prev.next = next;
-                x.prev = null;
+                prev.setNext(next);
             }
 
             if (next == null) {
                 last = prev;
             } else {
-                next.prev = prev;
-                x.next = null;
+                next.setPrev(prev);
             }
-
-            x.data = null;
             size--;
         }
     }
 
 
-    public ArrayList<Task> getTasks() {
+    public List getTasks() {
         ArrayList<Task> list = new ArrayList<>();
         Node<Task> link = last;
         while (!link.equals(first)){
-            list.add(link.data);
-            link = link.prev;
+            list.add(link.getData());
+            link = link.getPrev();
         }
-        list.add(first.data);
+        list.add(first.getData());
         return list;
     }
 

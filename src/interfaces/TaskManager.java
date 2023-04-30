@@ -3,7 +3,6 @@ package interfaces;
 import entities.EpicTask;
 import entities.SubTask;
 import entities.Task;
-import interfaces.HistoryManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,5 +25,5 @@ public interface TaskManager {
     ArrayList<SubTask> showEpicsSubTasks(EpicTask searchEpic);
     HistoryManager getHistoryManager ();
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ;
+
 }
