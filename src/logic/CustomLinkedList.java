@@ -22,10 +22,12 @@ public class CustomLinkedList {
         final Node<Task> oldLast = last;
         final Node<Task> newNode = new Node<>(oldLast, element, null);
         last = newNode;
-        if (oldLast == null)
+        if (oldLast == null) {
             first = newNode;
-        else
+        }
+        else {
             oldLast.setNext(newNode);
+        }
         size++;
 
     }
@@ -58,14 +60,14 @@ public class CustomLinkedList {
     }
 
 
-    public List getTasks() {
+    public List<Task> getTasks() {
         ArrayList<Task> list = new ArrayList<>();
-        Node<Task> link = last;
-        while (!link.equals(first)){
+        Node<Task> link = first;
+        while (!link.equals(last)){
             list.add(link.getData());
-            link = link.getPrev();
+            link = link.getNext();
         }
-        list.add(first.getData());
+        list.add(last.getData());
         return list;
     }
 

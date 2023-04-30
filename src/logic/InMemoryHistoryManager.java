@@ -2,8 +2,6 @@ package logic;
 
 import entities.Task;
 import interfaces.HistoryManager;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
@@ -12,7 +10,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     private final CustomLinkedList history = new CustomLinkedList();
 
     @Override
-    public List getHistory() {
+    public List<Task> getHistory() {
         return history.getTasks();
     }
 
