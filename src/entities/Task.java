@@ -2,16 +2,29 @@ package entities;
 
 public class Task {
 
+    protected int id;
     protected String name;
+
     protected String description;
     protected Status status;
-    protected int id;
+    protected String type = "Task";
 
     public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
 
+    }
+
+    public Task(int id, String name, String description, Status status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getName() {
@@ -49,11 +62,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return "entities.Task{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                ", id=" + id +
-                '}';
+        return id + "," + type + "," + name + "," + status + "," + description;
     }
 }

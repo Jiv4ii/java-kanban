@@ -1,6 +1,8 @@
 package interfaces;
 
 import entities.Task;
+import logic.CustomLinkedList;
+
 import java.util.List;
 
 public interface HistoryManager {

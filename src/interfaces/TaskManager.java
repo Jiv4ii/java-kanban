@@ -23,7 +23,7 @@ public interface TaskManager {
     void updateEpicTask(EpicTask epicTask);
     void updateSubTask(SubTask subTask);
     ArrayList<SubTask> showEpicsSubTasks(EpicTask searchEpic);
-    HistoryManager getHistoryManager ();
+    HistoryManager getHistoryManager();
 
 
 }

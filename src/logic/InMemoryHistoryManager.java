@@ -23,6 +23,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void remove(Task task) {
         history.removeNode(history.getNode(task));
     }
+
 }
 
 
