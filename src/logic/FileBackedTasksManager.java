@@ -96,7 +96,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         super.createEpicTask(new EpicTask(Integer.parseInt(puzzle[0]), puzzle[2], puzzle[4], status));
     }
 
-    private static Status getStatus(String[] puzzle) {
+    private  Status getStatus(String[] puzzle) {
         Status status = null;
         // по ТЗ status всегда будет корректна, это затычка чтобы status всегда была проинициализированна.
             switch (puzzle[3]) {
