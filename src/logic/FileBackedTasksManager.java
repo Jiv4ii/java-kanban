@@ -20,7 +20,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         try {
             file.createNewFile();
         } catch (IOException e) {
-            System.out.println("no good");
+            System.out.println("The file at the given path already exists");
         }
 
     }
@@ -76,62 +76,42 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     public void taskFromString(String value) {
         String[] puzzle = value.split(",");
-        Status status;
-        switch (puzzle[3]) {
-            case "NEW":
-                status = Status.NEW;
-                break;
-            case "IN_PROGRESS":
-                status = Status.IN_PROGRESS;
-                break;
-            case "DONE":
-                status = Status.DONE;
-                break;
-            default:
-                status = null;
-        }
+        Status status = getStatus(puzzle);
+
         super.createTask(new Task(Integer.parseInt(puzzle[0]), puzzle[2], puzzle[4], status));
 
     }
 
-    public void subTaskFromString(String value) {
+
+    private void subTaskFromString(String value) {
         String[] puzzle = value.split(",");
-        Status status;
-        switch (puzzle[3]) {
-            case "NEW":
-                status = Status.NEW;
-                break;
-            case "IN_PROGRESS":
-                status = Status.IN_PROGRESS;
-                break;
-            case "DONE":
-                status = Status.DONE;
-                break;
-            default:
-                status = null;
-        }
+        Status status = getStatus(puzzle);
         super.createSubTask(new SubTask(Integer.parseInt(puzzle[0]), puzzle[2], puzzle[4], status, Integer.parseInt(puzzle[5])));
 
     }
 
-    public void epicTaskFromString(String value) {
+    private void epicTaskFromString(String value) {
         String[] puzzle = value.split(",");
-        Status status;
-        switch (puzzle[3]) {
-            case "NEW":
-                status = Status.NEW;
-                break;
-            case "IN_PROGRESS":
-                status = Status.IN_PROGRESS;
-                break;
-            case "DONE":
-                status = Status.DONE;
-                break;
-            default:
-                status = null;
-        }
+        Status status = getStatus(puzzle);
         super.createEpicTask(new EpicTask(Integer.parseInt(puzzle[0]), puzzle[2], puzzle[4], status));
     }
+
+    private static Status getStatus(String[] puzzle) {
+        Status status = null;
+        // по ТЗ status всегда будет корректна, это затычка чтобы status всегда была проинициализированна.
+            switch (puzzle[3]) {
+                case "NEW":
+                    status = Status.NEW;
+                    break;
+                case "IN_PROGRESS":
+                    status = Status.IN_PROGRESS;
+                    break;
+                case "DONE":
+                    status = Status.DONE;
+                    break;
+            }
+        return status;
+}
 
 
     private void save() {
@@ -153,7 +133,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             writer.newLine();
             if (super.getHistoryManager().getHistory() != null) {
                 for (Task task : super.getHistoryManager().getHistory()) {
-                    if (super.getHistoryManager().getHistory().indexOf(task) == super.getHistoryManager().getHistory().size() -1 ){
+                    if (super.getHistoryManager().getHistory().indexOf(task) == super.getHistoryManager().getHistory().size() - 1) {
                         writer.write(task.getId() + "");
                         break;
                     }
@@ -165,7 +145,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         }
     }
 
-    public static FileBackedTasksManager loadFromFile(String path) {
+    public static FileBackedTasksManager loadFromFile(String path)  {
         List<String> lines = new ArrayList<>();
         try {
             lines = Files.readAllLines(Paths.get(path));
@@ -189,15 +169,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     break;
             }
         }
-            String[] history = lines.get(lines.size()-1).split(",");
-            for (String s : history) {
-                loadedFromFile.getById(Integer.parseInt(s));
-            }
-            loadedFromFile.save();
-            return loadedFromFile;
-
+        String[] history = lines.get(lines.size() - 1).split(",");
+        for (String s : history) {
+            loadedFromFile.getById(Integer.parseInt(s));
         }
+        return loadedFromFile;
+
     }
+}
 
 
 
