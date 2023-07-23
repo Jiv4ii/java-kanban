@@ -1,5 +1,9 @@
 package entities;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Objects;
+
 public class Task {
 
     protected int id;
@@ -8,19 +12,30 @@ public class Task {
     protected String description;
     protected Status status;
     protected String type = "Task";
+    protected Instant startTime;
 
-    public Task(String name, String description, Status status) {
+    protected Duration duration;
+
+
+
+
+
+    public Task(String name, String description, Status status, Instant startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
 
     }
 
-    public Task(int id, String name, String description, Status status) {
+    public Task(int id, String name, String description, Status status, Instant startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.status = status;
         this.id = id;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public String getType() {
@@ -59,9 +74,39 @@ public class Task {
         this.id = id;
     }
 
+    public Instant getEndTime(){
+        return startTime.plus(duration);
+    }
+
+    public  Instant getStartTime(){
+        return startTime;
+    }
+
 
     @Override
     public String toString() {
-        return id + "," + type + "," + name + "," + status + "," + description;
+        return id + "," + type + "," + name + "," + status + "," + description + "," + startTime + "," + duration;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && Objects.equals(type, task.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, status, type);
+    }
+
+    public void setStartTime(Instant startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
 }

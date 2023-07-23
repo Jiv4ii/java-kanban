@@ -6,6 +6,7 @@ import entities.Task;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TreeSet;
 
 public interface TaskManager {
     Collection<Task> showTasksList();
@@ -24,6 +25,7 @@ public interface TaskManager {
     void updateSubTask(SubTask subTask);
     ArrayList<SubTask> showEpicsSubTasks(EpicTask searchEpic);
     HistoryManager getHistoryManager();
+     TreeSet<Task> getPrioritizedTasks();
 
 
 }

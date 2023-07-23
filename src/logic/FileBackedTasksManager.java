@@ -7,6 +7,8 @@ import java.io.*;
 import java.nio.file.Files;
 
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         String[] puzzle = value.split(",");
         Status status = getStatus(puzzle);
 
-        super.createTask(new Task(Integer.parseInt(puzzle[0]), puzzle[2], puzzle[4], status));
+        super.createTask(new Task(Integer.parseInt(puzzle[0]), puzzle[2], puzzle[4], status, Instant.parse(puzzle[5]), Duration.parse(puzzle[6])));
 
     }
 
@@ -86,14 +88,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     private void subTaskFromString(String value) {
         String[] puzzle = value.split(",");
         Status status = getStatus(puzzle);
-        super.createSubTask(new SubTask(Integer.parseInt(puzzle[0]), puzzle[2], puzzle[4], status, Integer.parseInt(puzzle[5])));
+        super.createSubTask(new SubTask(Integer.parseInt(puzzle[0]), puzzle[2], puzzle[4], status, Integer.parseInt(puzzle[5]), Instant.parse(puzzle[6]), Duration.parse(puzzle[7])));
 
     }
 
     private void epicTaskFromString(String value) {
         String[] puzzle = value.split(",");
         Status status = getStatus(puzzle);
-        super.createEpicTask(new EpicTask(Integer.parseInt(puzzle[0]), puzzle[2], puzzle[4], status));
+        super.createEpicTask(new EpicTask(Integer.parseInt(puzzle[0]), puzzle[2], puzzle[4]));
     }
 
     private  Status getStatus(String[] puzzle) {
