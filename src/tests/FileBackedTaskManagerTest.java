@@ -29,7 +29,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
     }
 
     @Test
-    void FileBackedShouldReturnSameTaskById(){
+    void dShouldReturnSameTaskById(){
         FileBackedTasksManager managerFromFile = FileBackedTasksManager.loadFromFile(path);
         Task taskFromBacked = managerFromFile.getById(1);
         EpicTask epicFromBacked = (EpicTask) managerFromFile.getById(0);
@@ -40,7 +40,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
     }
 
     @Test
-    void FileBackedShouldReturnSameTaskLists(){
+    void ShouldReturnSameTaskLists(){
         FileBackedTasksManager managerFromFile = FileBackedTasksManager.loadFromFile(path);
         Collection<Task> tasksFromBacked = managerFromFile.showTasksList();
         Collection<EpicTask> epicsFromBacked =  managerFromFile.showEpicTasksList();
@@ -51,7 +51,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
     }
 
     @Test
-    void FileBackedShouldReturnMessageWhenManagerIsEmpty(){
+    void ShouldReturnMessageWhenManagerIsEmpty(){
         manager.deleteAllTasks();
         manager.deleteAllEpics();
         manager.deleteAllSubTasks();
@@ -60,14 +60,14 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
     }
 
     @Test
-    void FileBackedShouldReturnEmptyHistoryWithoutGetById(){
+    void ShouldReturnEmptyHistoryWithoutGetById(){
         FileBackedTasksManager managerFromFile = FileBackedTasksManager.loadFromFile(path);
         List<Task> historyFromFile = managerFromFile.getHistoryManager().getHistory();
         Assertions.assertTrue(historyFromFile.isEmpty(),"Без вызова задач история должна быть пуста");
     }
 
     @Test
-    void FileBackedShouldReturnHistory(){
+    void ShouldReturnHistory(){
         manager.getById(0);
         manager.getById(1);
         List<Task> expectedHistory = List.of(manager.getById(0),manager.getById(1));

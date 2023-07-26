@@ -13,27 +13,33 @@ import java.time.Instant;
 
 
 class EpicTaskTest {
+    /*В этом месте вы оставили замечание по поводу отсутствия привязки подзадач к эпикам.
+    * Все подзадачи привязываются к эпикe, указанному в конструкоре(поле epicId),добавляются в его список подзадач и обновляют его статус и время,
+    * если это не работает то нижестоящие тесты показали бы это.
+    * Если вы говорили не об этом, извиняюсь, я не понял замечание*/
 
-    private static InMemoryTaskManager manager;
+    private InMemoryTaskManager manager;
+    private EpicTask epic;
+    private SubTask testSub1;
+    private SubTask testSub2;
 
     @BeforeEach
-     void createManager() {
+    void createManager() {
         manager = new InMemoryTaskManager();
+        epic = new EpicTask("TestEpic", "Epic Testing");
+        testSub1 = new SubTask("SubTask1", "Sub Testing", Status.NEW, 0, Instant.now(), Duration.ofHours(15));
+        testSub2 = new SubTask("SubTask2", "Sub Testing", Status.NEW, 0, Instant.now().plus(Duration.ofDays(2)), Duration.ofDays(2));
     }
 
 
     @Test
-     void shouldReturnNewWhenSubTasksListEmpty() {
-        EpicTask epic = new EpicTask("TestEpic", "Epic Testing");
+    void shouldReturnNewWhenSubTasksListEmpty() {
         Assertions.assertEquals(Status.NEW, epic.getStatus());
     }
 
 
     @Test
-     void shouldReturnNewWhenSubTasksListNew() {
-        EpicTask epic = new EpicTask("TestEpic", "Epic Testing");
-        SubTask testSub1 = new SubTask("SubTask1", "Sub Testing", Status.NEW, 0, Instant.now(), Duration.ofHours(15));
-        SubTask testSub2 = new SubTask("SubTask2", "Sub Testing", Status.NEW, 0, Instant.now().plus(Duration.ofDays(2)), Duration.ofDays(2));
+    void shouldReturnNewWhenSubTasksListNew() {
         manager.createEpicTask(epic);
         manager.createSubTask(testSub1);
         manager.createSubTask(testSub2);
@@ -41,10 +47,7 @@ class EpicTaskTest {
     }
 
     @Test
-     void shouldReturnNewWhenSubTasksListDone() {
-        EpicTask epic = new EpicTask("TestEpic", "Epic Testing");
-        SubTask testSub1 = new SubTask("SubTask1", "Sub Testing", Status.DONE, 0, Instant.now(), Duration.ofHours(15));
-        SubTask testSub2 = new SubTask("SubTask2", "Sub Testing", Status.DONE, 0, Instant.now().plus(Duration.ofDays(2)), Duration.ofDays(2));
+    void shouldReturnNewWhenSubTasksListDone() {
         manager.createEpicTask(epic);
         manager.createSubTask(testSub1);
         manager.createSubTask(testSub2);
@@ -52,10 +55,7 @@ class EpicTaskTest {
     }
 
     @Test
-     void shouldReturnNewWhenSubTasksListNewAndDone() {
-        EpicTask epic = new EpicTask("TestEpic", "Epic Testing");
-        SubTask testSub1 = new SubTask("SubTask1", "Sub Testing", Status.NEW, 0, Instant.now(), Duration.ofHours(15));
-        SubTask testSub2 = new SubTask("SubTask2", "Sub Testing", Status.DONE, 0, Instant.now().plus(Duration.ofDays(2)), Duration.ofDays(2));
+    void shouldReturnNewWhenSubTasksListNewAndDone() {
         manager.createEpicTask(epic);
         manager.createSubTask(testSub1);
         manager.createSubTask(testSub2);
@@ -63,10 +63,7 @@ class EpicTaskTest {
     }
 
     @Test
-     void shouldReturnNewWhenSubTasksListNewAndInProgress() {
-        EpicTask epic = new EpicTask("TestEpic", "Epic Testing");
-        SubTask testSub1 = new SubTask("SubTask1", "Sub Testing", Status.IN_PROGRESS, 0, Instant.now(), Duration.ofHours(15));
-        SubTask testSub2 = new SubTask("SubTask2", "Sub Testing", Status.IN_PROGRESS, 0, Instant.now().plus(Duration.ofDays(2)), Duration.ofDays(2));
+    void shouldReturnNewWhenSubTasksListNewAndInProgress() {
         manager.createEpicTask(epic);
         manager.createSubTask(testSub1);
         manager.createSubTask(testSub2);

@@ -17,10 +17,10 @@ import java.time.Instant;
 class HistoryManagerTest {
 
     private HistoryManager manager;
-    Task testTask;
-    EpicTask testEpic;
-    SubTask testSub1;
-    SubTask testSub2;
+    private Task testTask;
+    private EpicTask testEpic;
+    private SubTask testSub1;
+    private SubTask testSub2;
 
     @BeforeEach
     void create(){
@@ -34,7 +34,7 @@ class HistoryManagerTest {
     }
 
     @Test
-    void getHistory() {
+    void shouldReturnEmptyHistoryInitially() {
         Assertions.assertTrue(manager.getHistory().isEmpty(),"Изначально история не пуста");
         manager.add(testTask);
         manager.add(testEpic);
@@ -44,29 +44,44 @@ class HistoryManagerTest {
     }
 
     @Test
-    void add() {
+    void shouldReturnHistorySizeRelevantToTasks() {
+        manager.add(testTask);
+        manager.add(testEpic);
+        manager.add(testSub1);
+        Assertions.assertNotNull(manager.getHistory(), "Задачи не добавляются в историю");
+        Assertions.assertEquals(3,manager.getHistory().size(),"Размер истории не соответствует требуемому");
+    }
+
+
+    @Test
+    void shouldReturnHistoryWithoutDuplicates() {
         manager.add(testTask);
         manager.add(testEpic);
         manager.add(testSub1);
         manager.add(testTask);
-        Assertions.assertEquals(testTask,manager.getHistory().get(2),"Повторный запрос задачи не ставит ее в конец списка");
         Assertions.assertEquals(3,manager.getHistory().size(),"Запрос идентичных задач дублирует их в истории");
 
     }
 
     @Test
-    void removeWorking() {
-        manager.add(testTask);
-        manager.remove(testTask);
-        Assertions.assertTrue(manager.getHistory().isEmpty(),"Задача не удаляется из истории");
+    void shouldPutDuplicateTaskToEndOfHistory() {
         manager.add(testTask);
         manager.add(testEpic);
         manager.add(testSub1);
+        manager.add(testTask);
+        Assertions.assertEquals(testTask,manager.getHistory().get(2),"Повторный запрос задачи не ставит ее в конец списка");
 
     }
 
     @Test
-    void removeFirstElement(){
+    void shouldRemoveTaskFromHistoryByRequest() {
+        manager.add(testTask);
+        manager.remove(testTask);
+        Assertions.assertTrue(manager.getHistory().isEmpty(),"Задача не удаляется из истории");
+    }
+
+    @Test
+    void shouldChangeHistoryCorrectlyWhenRemoveFirstTask(){
         manager.add(testTask);
         manager.add(testEpic);
         manager.add(testSub1);
@@ -77,7 +92,7 @@ class HistoryManagerTest {
     }
 
     @Test
-    void removeMiddleElement(){
+    void shouldChangeHistoryCorrectlyWhenRemoveMiddleTask(){
         manager.add(testTask);
         manager.add(testEpic);
         manager.add(testSub1);
@@ -88,7 +103,7 @@ class HistoryManagerTest {
     }
 
     @Test
-    void removeLastElement(){
+    void shouldChangeHistoryCorrectlyWhenRemoveLastTask(){
         manager.add(testTask);
         manager.add(testEpic);
         manager.add(testSub1);
@@ -99,13 +114,13 @@ class HistoryManagerTest {
     }
 
     @Test
-    void removeElementWhenHistoryIsEmpty(){
+    void shouldThrowExceptionWhenRemoveTaskFromEmptyHistory(){
        Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> manager.remove(testSub1));
        Assertions.assertEquals("История не содержит данной задачи",exception.getMessage());
     }
 
     @Test
-    void removeElementWhenTaskIsIncorrect(){
+    void shouldThrowExceptionWhenRemoveIncorrectTask(){
         manager.add(testTask);
         manager.add(testEpic);
         manager.add(testSub1);
