@@ -21,6 +21,9 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(Task task) {
+        if (!getHistory().contains(task)) {
+            throw new IllegalStateException("История не содержит данной задачи");
+        }
         history.removeNode(history.getNode(task));
     }
 

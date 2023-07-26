@@ -25,7 +25,7 @@ public interface TaskManager {
     void updateSubTask(SubTask subTask);
     ArrayList<SubTask> showEpicsSubTasks(EpicTask searchEpic);
     HistoryManager getHistoryManager();
-     TreeSet<Task> getPrioritizedTasks();
+    TreeSet<Task> getPrioritizedTasks();
 
 
 }

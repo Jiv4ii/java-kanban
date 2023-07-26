@@ -1,5 +1,6 @@
 package entities;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -26,6 +27,30 @@ public class EpicTask extends Task {
     public EpicTask(int id, String name, String description) {
         super(id, name, description, Status.NEW,null, null);
         epicsSubTasks = new ArrayList<>();
+    }
+
+    @Override
+    public Instant getEndTime() {
+        if (super.getEndTime() == null){
+            throw new IllegalStateException("Добавьте подзадачи");
+        }
+        return super.getEndTime();
+    }
+
+    @Override
+    public Instant getStartTime() {
+        if (super.getStartTime() == null){
+            throw new IllegalStateException("Добавьте подзадачи");
+        }
+        return super.getStartTime();
+    }
+
+    @Override
+    public Duration getDuration() {
+        if (super.getDuration() == null){
+            throw new IllegalStateException("Добавьте подзадачи");
+        }
+        return super.getDuration();
     }
 
     @Override

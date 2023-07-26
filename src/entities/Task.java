@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Task {
 
-    protected int id;
+    protected Integer id;
     protected String name;
 
     protected String description;
@@ -15,8 +15,6 @@ public class Task {
     protected Instant startTime;
 
     protected Duration duration;
-
-
 
 
 
@@ -66,7 +64,7 @@ public class Task {
         this.status = status;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -80,6 +78,10 @@ public class Task {
 
     public  Instant getStartTime(){
         return startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
     }
 
 

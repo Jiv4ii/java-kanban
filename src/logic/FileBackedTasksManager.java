@@ -94,7 +94,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     private void epicTaskFromString(String value) {
         String[] puzzle = value.split(",");
-        Status status = getStatus(puzzle);
         super.createEpicTask(new EpicTask(Integer.parseInt(puzzle[0]), puzzle[2], puzzle[4]));
     }
 
@@ -155,6 +154,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             System.out.println("alarm");
         }
         FileBackedTasksManager loadedFromFile = new FileBackedTasksManager(path);
+        if (lines.get(0).isEmpty()){
+            throw new IllegalStateException("Файл пуст");
+        }
         for (String line : lines) {
             if (line.isEmpty()) {
                 break;
@@ -171,9 +173,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     break;
             }
         }
-        String[] history = lines.get(lines.size() - 1).split(",");
-        for (String s : history) {
-            loadedFromFile.getById(Integer.parseInt(s));
+        if (!lines.get(lines.size() - 1).isEmpty()) {
+            String[] history = lines.get(lines.size() - 1).split(",");
+            for (String s : history) {
+                loadedFromFile.getById(Integer.parseInt(s));
+            }
         }
         return loadedFromFile;
 

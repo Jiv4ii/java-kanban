@@ -62,7 +62,7 @@ public class CustomLinkedList {
 
     public List<Task> getTasks() {
         if (first == null){
-            return null;
+            return new ArrayList<>();
         }
         ArrayList<Task> list = new ArrayList<>();
         Node<Task> link = first;
