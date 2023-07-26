@@ -49,25 +49,59 @@ class EpicTaskTest {
     @Test
     void shouldReturnNewWhenSubTasksListDone() {
         manager.createEpicTask(epic);
+        testSub1.setStatus(Status.DONE);
         manager.createSubTask(testSub1);
+        testSub2.setStatus(Status.DONE);
         manager.createSubTask(testSub2);
         Assertions.assertEquals(Status.DONE, epic.getStatus());
     }
 
     @Test
-    void shouldReturnNewWhenSubTasksListNewAndDone() {
+    void shouldReturnInProgressWhenSubTasksListNewAndDone() {
         manager.createEpicTask(epic);
         manager.createSubTask(testSub1);
+        testSub2.setStatus(Status.DONE);
         manager.createSubTask(testSub2);
         Assertions.assertEquals(Status.IN_PROGRESS, epic.getStatus());
     }
 
     @Test
-    void shouldReturnNewWhenSubTasksListNewAndInProgress() {
+    void shouldReturnInProgressWhenSubTasksListNewAndInProgress() {
+        manager.createEpicTask(epic);
+        manager.createSubTask(testSub1);
+        testSub2.setStatus(Status.IN_PROGRESS);
+        manager.createSubTask(testSub2);
+        Assertions.assertEquals(Status.IN_PROGRESS, epic.getStatus());
+    }
+
+    @Test
+    void shouldReturnMessageWhenSubTasksNotAdded() {
+        manager.createEpicTask(epic);
+        Throwable exception = Assertions.assertThrows(IllegalStateException.class,() -> epic.getStartTime());
+        Assertions.assertEquals("Добавьте подзадачи",exception.getMessage());
+    }
+
+    @Test
+    void shouldReturnMessageInDurationWhenSubTasksNotAdded() {
+        manager.createEpicTask(epic);
+        Throwable exception = Assertions.assertThrows(IllegalStateException.class,() -> epic.getStartTime());
+        Assertions.assertEquals("Добавьте подзадачи",exception.getMessage());
+    }
+
+    @Test
+    void shouldReturnSubTasksStartAndDuration() {
+        manager.createEpicTask(epic);
+        manager.createSubTask(testSub1);
+        Assertions.assertEquals(testSub1.getDuration(),epic.getDuration());
+        Assertions.assertEquals(testSub1.getStartTime(),epic.getStartTime());
+    }
+
+    @Test
+    void shouldReturnSubTasksTotalDuration() {
         manager.createEpicTask(epic);
         manager.createSubTask(testSub1);
         manager.createSubTask(testSub2);
-        Assertions.assertEquals(Status.IN_PROGRESS, epic.getStatus());
+        Assertions.assertEquals(Duration.between(testSub1.getStartTime(),testSub2.getEndTime()),epic.getDuration());
     }
 
 
