@@ -34,7 +34,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void ShouldReturnEmptyListWhenTasksNotAdded() {
+    void shouldReturnEmptyListWhenTasksNotAdded() {
         Assertions.assertTrue(emptyManager.showTasksList().isEmpty());
 
     }
@@ -48,7 +48,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void  ShouldReturnEmptyListWhenEpicTasksNotAdded() {
+    void  shouldReturnEmptyListWhenEpicTasksNotAdded() {
         Assertions.assertTrue(emptyManager.showEpicTasksList().isEmpty());
     }
 
@@ -61,7 +61,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void ShouldReturnEmptyListWhenSubTasksNotAdded() {
+    void shouldReturnEmptyListWhenSubTasksNotAdded() {
         Assertions.assertTrue(emptyManager.showSubTasksList().isEmpty());
     }
 
