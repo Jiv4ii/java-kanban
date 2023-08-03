@@ -1,52 +1,31 @@
-import entities.EpicTask;
-import entities.Status;
-import entities.SubTask;
-import entities.Task;
-import interfaces.TaskManager;
-import logic.*;
+import logic.HttpTaskManager;
+import HTTP.KVServer;
+import entities.*;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 
 public class Main {
 
-    public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefault();
-        Task task = new Task("Сделал Таск", "Сделал сделал",  Status.DONE, Instant.now().minus(Duration.ofDays(2)), Duration.ofDays(2));
-        Task task2 = new Task("Сделать Таск", "Сделат сделать",  Status.NEW, Instant.now(), Duration.ofDays(2));
+    public static void main(String[] args)  throws IOException{
+        new KVServer().start();
+       HttpTaskManager manager = new HttpTaskManager("http://localhost:8078");
+         Task testTask = new Task("Task", "Task testring", Status.NEW, Instant.now(), Duration.ofHours(15));
+         EpicTask testEpic = new EpicTask("TestEpic", "Epic Testing");
+         SubTask testSub1 = new SubTask("SubTask1", "Sub Testing", Status.NEW, 1, Instant.now().plus(Duration.ofDays(1)), Duration.ofHours(15));
+         SubTask testSub2 = new SubTask("SubTask2", "Sub Testing", Status.NEW, 1, Instant.now().plus(Duration.ofDays(2)), Duration.ofHours(15));
+         manager.createTask(testTask);
+         manager.createEpicTask(testEpic);
+         manager.createSubTask(testSub1);
+        System.out.println(manager.getHistory());
+         HttpTaskManager manager1 =HttpTaskManager.loadFromServer("http://localhost:8078");
+        System.out.println(manager1.showTasksList());
+        System.out.println(manager1.showEpicTasksList().get(0).getEpicsSubTasks());
+        System.out.println(manager1.showSubTasksList());
+        System.out.println(manager1.getHistory());
+        System.out.println(manager1.getPrioritizedTasks());
 
-
-
-        EpicTask epicTask = new EpicTask("Сделать ЕпикТаск", "Начать Закончить");
-        SubTask subTask1 = new SubTask("Начать ЕпикТаск", "Начать начать", Status.DONE, 2, Instant.now().plus(Duration.ofDays(3)), Duration.ofDays(2));
-        SubTask subTask2 = new SubTask("Начать ЕпикТаск", "Начать начать", Status.DONE, 2, Instant.now().minus(Duration.ofDays(20)), Duration.ofDays(7));
-
-
-
-        taskManager.createTask(task);
-        taskManager.createTask(task2);
-        taskManager.createEpicTask(epicTask);
-        taskManager.createSubTask(subTask1);
-        taskManager.createSubTask(subTask2);
-
-        System.out.println(taskManager.showEpicTasksList());
-        System.out.println(taskManager.getPrioritizedTasks());
-        System.out.println();
-
-
-
-
-        taskManager.getById(0);
-        taskManager.getById(2);
-        taskManager.getById(1);
-
-        taskManager.deleteById(0);
-
-        System.out.println(taskManager.showTasksList().toString());
-        System.out.println(taskManager.showEpicTasksList().toString());
-        System.out.println(taskManager.showSubTasksList().toString());
-        System.out.println(taskManager.getHistoryManager().getHistory());
-        System.out.println();
 
 
 

@@ -1,5 +1,7 @@
 package entities;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
@@ -7,6 +9,7 @@ import java.util.Objects;
 public class SubTask extends Task {
 
    protected int epicId;
+    @SerializedName("subType")
     protected String type = "SubTask";
 
     public SubTask(String name, String description, Status status, int epicId, Instant startTime, Duration duration) {
@@ -48,5 +51,14 @@ public class SubTask extends Task {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), epicId, type);
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

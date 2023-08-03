@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
 
-public class Task {
+public class testTask {
 
     protected Integer id;
     protected String name;
@@ -12,28 +12,22 @@ public class Task {
     protected String description;
     protected Status status;
     protected String type = "Task";
-    protected Instant startTime;
-
-    protected Duration duration;
 
 
 
-    public Task(String name, String description, Status status, Instant startTime, Duration duration) {
+    public testTask(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.startTime = startTime;
-        this.duration = duration;
 
     }
 
-    public Task(int id, String name, String description, Status status, Instant startTime, Duration duration) {
+    public testTask(int id, String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
         this.id = id;
-        this.startTime = startTime;
-        this.duration = duration;
+
     }
 
     public String getType() {
@@ -68,26 +62,15 @@ public class Task {
         return id;
     }
 
-
-    public Instant getEndTime(){
-        if (startTime == null){
-            return null;
-        }
-        return startTime.plus(duration);
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public  Instant getStartTime(){
-        return startTime;
-    }
-
-    public Duration getDuration() {
-        return duration;
-    }
 
 
     @Override
     public String toString() {
-        return id + "," + type + "," + name + "," + status + "," + description + "," + startTime + "," + duration;
+        return id + "," + type + "," + name + "," + status + "," + description;
     }
 
     @Override
@@ -103,19 +86,5 @@ public class Task {
         return Objects.hash(id, name, description, status, type);
     }
 
-    public void setStartTime(Instant startTime) {
-        this.startTime = startTime;
-    }
 
-    public void setDuration(Duration duration) {
-        this.duration = duration;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }

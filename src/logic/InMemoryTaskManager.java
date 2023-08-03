@@ -14,34 +14,34 @@ import java.util.*;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    int id = 0;
+    protected int id = 0;
 
 
-    private final HashMap<Integer, Task> tasks = new HashMap<>();
+    protected final HashMap<Integer, Task> tasks = new HashMap<>();
 
-    private final HashMap<Integer, EpicTask> epics = new HashMap<>();
+    protected final HashMap<Integer, EpicTask> epics = new HashMap<>();
 
-    private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    protected final HashMap<Integer, SubTask> subTasks = new HashMap<>();
 
-    private final HistoryManager historyManager = Managers.getHistory();
+    protected final HistoryManager historyManager = Managers.getHistory();
 
-    private final TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(task -> task.getStartTime().toEpochMilli()));
+    protected final TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(task -> task.getStartTime().toEpochMilli()));
 
 
     @Override
-    public Collection<Task> showTasksList() {
-        return tasks.values();
+    public ArrayList<Task> showTasksList() {
+        return new ArrayList<>(tasks.values());
     }
 
     @Override
-    public Collection<EpicTask> showEpicTasksList() {
-        return epics.values();
+    public ArrayList<EpicTask> showEpicTasksList() {
+        return new ArrayList<>(epics.values());
     }
 
     @Override
-    public Collection<SubTask> showSubTasksList() {
+    public ArrayList<SubTask> showSubTasksList() {
 
-        return subTasks.values();
+        return new ArrayList<>(subTasks.values());
     }
 
 
@@ -109,8 +109,8 @@ public class InMemoryTaskManager implements TaskManager {
         throw new IllegalStateException("Задача не найдена");
     }
 
-    public HistoryManager getHistoryManager() {
-        return historyManager;
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 
     @Override

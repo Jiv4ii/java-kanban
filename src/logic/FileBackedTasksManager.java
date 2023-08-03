@@ -27,6 +27,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     }
 
+    public FileBackedTasksManager() {
+        file = null;
+        System.out.println("Используется конструктор для HttpTaskManager");
+    }
+
     @Override
     public Task getById(int searchId) {
         super.getById(searchId);
@@ -115,7 +120,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 }
 
 
-    private void save() {
+    protected void save() {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file)
         )) {
@@ -132,9 +137,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 writer.newLine();
             }
             writer.newLine();
-            if (super.getHistoryManager().getHistory() != null) {
-                for (Task task : super.getHistoryManager().getHistory()) {
-                    if (super.getHistoryManager().getHistory().indexOf(task) == super.getHistoryManager().getHistory().size() - 1) {
+            if (super.getHistory() != null) {
+                for (Task task : super.getHistory()) {
+                    if (super.getHistory().indexOf(task) == super.getHistory().size() - 1) {
                         writer.write(task.getId() + "");
                         break;
                     }
@@ -146,7 +151,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         }
     }
 
-    public static FileBackedTasksManager loadFromFile(String path)  {
+    public static FileBackedTasksManager load(String path)  {
         List<String> lines = new ArrayList<>();
         try {
             lines = Files.readAllLines(Paths.get(path));

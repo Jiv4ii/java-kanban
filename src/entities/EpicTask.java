@@ -1,5 +1,7 @@
 package entities;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.Objects;
 public class EpicTask extends Task {
 
     protected ArrayList<SubTask> epicsSubTasks;
+    @SerializedName("epicType")
     protected String type = "EpicTask";
     protected Instant endTime;
 
@@ -31,25 +34,16 @@ public class EpicTask extends Task {
 
     @Override
     public Instant getEndTime() {
-        if (super.getEndTime() == null){
-            throw new IllegalStateException("Добавьте подзадачи");
-        }
         return super.getEndTime();
     }
 
     @Override
     public Instant getStartTime() {
-        if (super.getStartTime() == null){
-            throw new IllegalStateException("Добавьте подзадачи");
-        }
         return super.getStartTime();
     }
 
     @Override
     public Duration getDuration() {
-        if (super.getDuration() == null){
-            throw new IllegalStateException("Добавьте подзадачи");
-        }
         return super.getDuration();
     }
 
@@ -73,5 +67,14 @@ public class EpicTask extends Task {
 
     public void setEndTime(Instant endtime) {
         this.endTime = endtime;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

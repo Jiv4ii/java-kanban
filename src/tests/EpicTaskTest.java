@@ -77,15 +77,13 @@ class EpicTaskTest {
     @Test
     void shouldReturnMessageWhenSubTasksNotAdded() {
         manager.createEpicTask(epic);
-        Throwable exception = Assertions.assertThrows(IllegalStateException.class,() -> epic.getStartTime());
-        Assertions.assertEquals("Добавьте подзадачи",exception.getMessage());
+        Assertions.assertNull(epic.getStartTime(),"У эпика без подзадач не должно быть временных точек");
     }
 
     @Test
     void shouldReturnMessageInDurationWhenSubTasksNotAdded() {
         manager.createEpicTask(epic);
-        Throwable exception = Assertions.assertThrows(IllegalStateException.class,() -> epic.getStartTime());
-        Assertions.assertEquals("Добавьте подзадачи",exception.getMessage());
+        Assertions.assertNull(epic.getDuration(),"У эпика без подзадач не должно быть временных точек");
     }
 
     @Test

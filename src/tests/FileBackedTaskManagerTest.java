@@ -17,6 +17,8 @@ import java.util.List;
 
 public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksManager> {
 
+
+
     String path = "C:\\Users\\EV\\Desktop\\pro\\moe.csv";
     @BeforeEach
     void create() {
@@ -30,7 +32,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
 
     @Test
     void shouldReturnSameTaskById(){
-        FileBackedTasksManager managerFromFile = FileBackedTasksManager.loadFromFile(path);
+        FileBackedTasksManager managerFromFile = FileBackedTasksManager.load(path);
         Task taskFromBacked = managerFromFile.getById(1);
         EpicTask epicFromBacked = (EpicTask) managerFromFile.getById(0);
         SubTask subFromBacked = (SubTask) managerFromFile.getById(2);
@@ -41,7 +43,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
 
     @Test
     void shouldReturnSameTaskLists(){
-        FileBackedTasksManager managerFromFile = FileBackedTasksManager.loadFromFile(path);
+        FileBackedTasksManager managerFromFile = FileBackedTasksManager.load(path);
         Collection<Task> tasksFromBacked = managerFromFile.showTasksList();
         Collection<EpicTask> epicsFromBacked =  managerFromFile.showEpicTasksList();
         Collection<SubTask> subsFromBacked =  managerFromFile.showSubTasksList();
@@ -55,14 +57,14 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
         manager.deleteAllTasks();
         manager.deleteAllEpics();
         manager.deleteAllSubTasks();
-        Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> FileBackedTasksManager.loadFromFile("C:\\Users\\EV\\Desktop\\pro\\moe2.csv"));
+        Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> FileBackedTasksManager.load("C:\\Users\\EV\\Desktop\\pro\\moe2.csv"));
         Assertions.assertEquals("Файл пуст", exception.getMessage());
     }
 
     @Test
     void shouldReturnEmptyHistoryWithoutGetById(){
-        FileBackedTasksManager managerFromFile = FileBackedTasksManager.loadFromFile(path);
-        List<Task> historyFromFile = managerFromFile.getHistoryManager().getHistory();
+        FileBackedTasksManager managerFromFile = FileBackedTasksManager.load(path);
+        List<Task> historyFromFile = managerFromFile.getHistory();
         Assertions.assertTrue(historyFromFile.isEmpty(),"Без вызова задач история должна быть пуста");
     }
 
@@ -72,8 +74,8 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
         manager.getById(1);
         List<Task> expectedHistory = List.of(manager.getById(0),manager.getById(1));
 
-        FileBackedTasksManager managerFromFile = FileBackedTasksManager.loadFromFile(path);
-        List<Task> historyFromFile = managerFromFile.getHistoryManager().getHistory();
+        FileBackedTasksManager managerFromFile = FileBackedTasksManager.load(path);
+        List<Task> historyFromFile = managerFromFile.getHistory();
 
         Assertions.assertEquals(expectedHistory,historyFromFile,"Без вызова задач история должна быть пуста");
     }

@@ -6,12 +6,13 @@ import entities.Task;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.TreeSet;
 
 public interface TaskManager {
-    Collection<Task> showTasksList();
-    Collection<EpicTask> showEpicTasksList();
-    Collection<SubTask> showSubTasksList();
+    ArrayList<Task> showTasksList();
+    ArrayList<EpicTask> showEpicTasksList();
+    ArrayList<SubTask> showSubTasksList();
     void deleteAllTasks();
     void deleteAllEpics();
     void deleteAllSubTasks();
@@ -24,8 +25,9 @@ public interface TaskManager {
     void updateEpicTask(EpicTask epicTask);
     void updateSubTask(SubTask subTask);
     ArrayList<SubTask> showEpicsSubTasks(EpicTask searchEpic);
-    HistoryManager getHistoryManager();
+    List<Task> getHistory();
     TreeSet<Task> getPrioritizedTasks();
+
 
 
 }
