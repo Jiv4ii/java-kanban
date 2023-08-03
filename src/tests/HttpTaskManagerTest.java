@@ -94,6 +94,8 @@ public class HttpTaskManagerTest {
         manager.createTask(testTask);
         manager.createEpicTask(testEpic);
         manager.createSubTask(testSub1);
+        manager.getById(2);
+        manager.getById(1);
         HttpTaskManager manager1 =HttpTaskManager.loadFromServer("http://localhost:8078");
         Assertions.assertEquals(manager.showTasksList(),manager1.showTasksList(),"Неверная загрузка задач с сервера");
         Assertions.assertEquals(manager.showEpicTasksList(),manager1.showEpicTasksList(),"Неверная загрузка Эпиков с сервера");
