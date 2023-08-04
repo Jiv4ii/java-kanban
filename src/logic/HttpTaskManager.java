@@ -37,6 +37,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
             client.put("tasks/subtask", gson.toJson(showSubTasksList()));
             client.put("tasks/history", gson.toJson(getHistory()));
             client.put("tasks", gson.toJson(prioritizedTasks));
+            client.put("id", gson.toJson(id));
         } catch (CustomException e) {
             System.out.println(e.getMessage());
 
@@ -54,6 +55,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
         JsonArray subTasksJson = JsonParser.parseString(newclient.load("tasks/subtask")).getAsJsonArray();
         JsonArray historyJson = JsonParser.parseString(newclient.load("tasks/history")).getAsJsonArray();
         JsonArray prioritizedJson = JsonParser.parseString(newclient.load("tasks")).getAsJsonArray();
+        Integer idJson = JsonParser.parseString(newclient.load("id")).getAsInt();
         for (JsonElement element : taskJson) {
             Task taskFromJson = newgson.fromJson(element, Task.class);
             newManager.tasks.put(taskFromJson.getId(), taskFromJson);
@@ -67,7 +69,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
             newManager.subTasks.put(taskFromJson.getId(), taskFromJson);
         }
 
-        newManager.id = taskJson.size() + epicsJson.size() + subTasksJson.size();
+        newManager.id = idJson;
 
 
         for (JsonElement element : historyJson) {

@@ -159,7 +159,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             System.out.println("alarm");
         }
         FileBackedTasksManager loadedFromFile = new FileBackedTasksManager(path);
-        if (lines.get(0).isEmpty()){
+        if (lines.size() == 0){
             throw new IllegalStateException("Файл пуст");
         }
         for (String line : lines) {

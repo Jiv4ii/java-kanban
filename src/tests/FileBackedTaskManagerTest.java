@@ -61,7 +61,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
         manager.deleteAllTasks();
         manager.deleteAllEpics();
         manager.deleteAllSubTasks();
-        Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> FileBackedTasksManager.load("C:\\Users\\EV\\Desktop\\pro\\moe2.csv"));
+        Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> FileBackedTasksManager.load("bebra2.css"));
         Assertions.assertEquals("Файл пуст", exception.getMessage());
     }
 

@@ -9,10 +9,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class KVTaskClient {
-    String path;
+    private String path;
     public String token;
+   private final Logger logger = Logger.getLogger(KVTaskClient.class.getName());
 
     private final HttpClient client;
     public KVTaskClient(String path) throws CustomException {
@@ -35,10 +39,12 @@ public class KVTaskClient {
 
             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200){
+                logger.log(Level.SEVERE, "Недопустимый код состояния ответа");
                 throw new CustomException("Недопустимый код состояния ответа");
             }
             token = response.body();
         }  catch ( InterruptedException | IOException e){
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new CustomException("Проблемы с потоками (-_-)");
         }
 
@@ -57,6 +63,7 @@ public class KVTaskClient {
 
             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch ( InterruptedException | IOException e){
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new CustomException("Проблемы с потоками (-_-)");
         }
 
@@ -73,10 +80,12 @@ public class KVTaskClient {
         try {
             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200){
+                logger.log(Level.SEVERE, "Недопустимый код состояния ответа");
                 throw new CustomException("Недопустимый код состояния ответа");
             }
             return response.body();
         } catch ( InterruptedException | IOException e){
+            logger.log(Level.SEVERE, e.getMessage(), e);
             throw new CustomException("Проблемы с потоками (-_-)");
         }
 

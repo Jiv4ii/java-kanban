@@ -334,4 +334,8 @@ public class InMemoryTaskManager implements TaskManager {
     public TreeSet<Task> getPrioritizedTasks() {
         return prioritizedTasks;
     }
+
+    public int getId() {
+        return id;
+    }
 }
