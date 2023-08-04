@@ -1,3 +1,4 @@
+
 package tests;
 
 import HTTP.HttpTaskServer;
@@ -33,38 +34,33 @@ public class HttpTaskServerTest {
     private final SubTask testSub2 = new SubTask(3, "SubTask2", "Sub Testing", Status.NEW, 1, Instant.now().minus(Duration.ofDays(2)), Duration.ofHours(15));
     private final Gson gson = new GsonBuilder().create();
 
-    private KVServer kvServer;
     private HttpTaskServer taskServer;
 
     @BeforeEach
     void create() throws IOException {
-        kvServer = new KVServer();
-        kvServer.start();
-
         taskServer = new HttpTaskServer();
     }
 
     @AfterEach
     void stop() {
-        kvServer.stop();
         taskServer.stop();
     }
 
     @Test
     void shouldAddTaskAndGetIt() throws IOException, InterruptedException {
         String json = gson.toJson(testTask);
-        final HttpResponse<String> response = put(json);
+        final HttpResponse<String> response = put(json,"/task");
 
 
 
-        final HttpResponse<String> response2 = load("/tasks/task?id=0");
+        final HttpResponse<String> response2 = load("/tasks/Id?id=0");
         String jsonResponce = response2.body();
         System.out.println(jsonResponce);
         Task jsonTask = gson.fromJson(jsonResponce, Task.class);
 
 
 
-        final HttpResponse<String> response3 = load("/tasks/task/");
+        final HttpResponse<String> response3 = load("/tasks/task");
         Type taskListType = new TypeToken<ArrayList<Task>>() {
         }.getType();
         ArrayList<Task> listJson = gson.fromJson(response3.body(), taskListType);
@@ -79,15 +75,15 @@ public class HttpTaskServerTest {
     @Test
     void shouldAddEpicTaskWithoutSubsAndGetIt() throws IOException, InterruptedException {
         String json = gson.toJson(testEpic);
-        final HttpResponse<String> response = put(json);
+        final HttpResponse<String> response = put(json,"/epictask");
 
 
-        final HttpResponse<String> response2 = load("/tasks/task?id=1");
+        final HttpResponse<String> response2 = load("/tasks/Id?id=1");
         String jsonResponce = response2.body();
         EpicTask jsonEpic = gson.fromJson(jsonResponce, EpicTask.class);
 
 
-        final HttpResponse<String> response3 = load("/tasks/epictask/");
+        final HttpResponse<String> response3 = load("/tasks/epictask");
         Type taskListType = new TypeToken<ArrayList<EpicTask>>() {
         }.getType();
         ArrayList<Task> listJson = gson.fromJson(response3.body(), taskListType);
@@ -102,21 +98,21 @@ public class HttpTaskServerTest {
     @Test
     void shouldAddEpicTaskAndGetIt() throws IOException, InterruptedException {
         String json = gson.toJson(testEpic);
-        put(json);
+        put(json,"/epictask");
 
 
         String jsonSub = gson.toJson(testSub1);
-        final HttpResponse<String> response = put(jsonSub);
+        final HttpResponse<String> response = put(jsonSub,"/subtask");
 
 
 
-        final HttpResponse<String> response2 = load("/tasks/task?id=2");
+        final HttpResponse<String> response2 = load("/tasks/Id?id=2");
         String jsonResponce = response2.body();
         SubTask jsonSubs = gson.fromJson(jsonResponce, SubTask.class);
 
 
 
-        final HttpResponse<String> response3 = load("/tasks/subtask/");
+        final HttpResponse<String> response3 = load("/tasks/subtask");
         Type taskListType = new TypeToken<ArrayList<SubTask>>() {
         }.getType();
         ArrayList<SubTask> listJson = gson.fromJson(response3.body(), taskListType);
@@ -128,42 +124,14 @@ public class HttpTaskServerTest {
         Assertions.assertEquals(list, listJson, "Список задач отличается от исходного");
     }
 
-     HttpResponse<String> load(String path) throws IOException, InterruptedException{
-        HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080" + path);
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(url)
-                .GET()
-                .build();
-            return  client.send(request, HttpResponse.BodyHandlers.ofString());
-    }
 
-    HttpResponse<String> put(String json) throws IOException, InterruptedException{
-            HttpClient client = HttpClient.newHttpClient();
-            URI url = URI.create("http://localhost:8080/tasks/task");
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(url)
-                    .POST(HttpRequest.BodyPublishers.ofString(json, StandardCharsets.UTF_8))
-                    .build();
-            return   client.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-    HttpResponse<String> delete(String path) throws IOException, InterruptedException{
-        HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080" + path);
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(url)
-                .DELETE()
-                .build();
-        return  client.send(request, HttpResponse.BodyHandlers.ofString());
-    }
 
     @Test
     void shouldDeleteById() throws IOException,InterruptedException{
         String json = gson.toJson(testTask);
-        put(json);
+        put(json,"/task");
 
-        String path = "/tasks/task?id=0";
+        String path = "/tasks/Id?id=0";
         HttpResponse<String> response = delete(path);
         Assertions.assertEquals(200,response.statusCode());
     }
@@ -171,18 +139,18 @@ public class HttpTaskServerTest {
     @Test
     void shouldDeleteTasksByRequest() throws IOException,InterruptedException{
         String json = gson.toJson(testTask);
-        put(json);
+        put(json,"/task");
 
-        String path = "/tasks/task/";
+        String path = "/task";
         HttpResponse<String> response = delete(path);
         Assertions.assertEquals(200,response.statusCode());
     }
     @Test
     void shouldDeleteEpicsByRequest() throws IOException,InterruptedException{
         String json = gson.toJson(testEpic);
-        put(json);
+        put(json,"/epictask");
 
-        String path = "/tasks/epictask/";
+        String path = "/epictask";
         HttpResponse<String> response = delete(path);
         Assertions.assertEquals(200,response.statusCode());
     }
@@ -191,10 +159,10 @@ public class HttpTaskServerTest {
     void shouldDeleteSubsByRequest() throws IOException,InterruptedException{
         String json = gson.toJson(testEpic);
         String jsonSub = gson.toJson(testSub1);
-        put(json);
-        put(jsonSub);
+        put(json,"/epictask");
+        put(jsonSub,"/subtask");
 
-        String path = "/tasks/subtask/";
+        String path = "/subtask/";
         HttpResponse<String> response = delete(path);
         Assertions.assertEquals(200,response.statusCode());
     }
@@ -205,10 +173,10 @@ public class HttpTaskServerTest {
         String jsonEpic= gson.toJson(testEpic);
         String jsonSub1 = gson.toJson(testSub1);
         String jsonSub2 = gson.toJson(testSub2);
-        put(json);
-        put(jsonEpic);
-        put(jsonSub1);
-        put(jsonSub2);
+        put(json,"/task");
+        put(jsonEpic,"/epictask");
+        put(jsonSub1,"/subtask");
+        put(jsonSub2,"/subtask");
 
         TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(task -> task.getStartTime().toEpochMilli()));
         TreeSet<Task> prioritizedTasks2 = new TreeSet<>(Comparator.comparing(task -> task.getStartTime().toEpochMilli()));
@@ -234,14 +202,14 @@ public class HttpTaskServerTest {
         String jsonEpic= gson.toJson(testEpic);
         String jsonSub1 = gson.toJson(testSub1);
         String jsonSub2 = gson.toJson(testSub2);
-        put(json);
-        put(jsonEpic);
-        put(jsonSub1);
+        put(json,"/task");
+        put(jsonEpic,"/epictask");
+        put(jsonSub1,"/subtask");
 
-        load("/tasks/task?id=0");
-        load("/tasks/task?id=2");
-        load("/tasks/task?id=1");
-        load("/tasks/task?id=0");
+        load("/tasks/Id?id=0");
+        load("/tasks/Id?id=2");
+        load("/tasks/Id?id=1");
+        load("/tasks/Id?id=0");
 
         //Фокусы чтобы поставить время для Эпика
         TaskManager manager = new InMemoryTaskManager();
@@ -252,7 +220,8 @@ public class HttpTaskServerTest {
 
         ArrayList<Task> history = new ArrayList<>(Arrays.asList(testSub1,epic,testTask));
 
-        HttpResponse<String> response = load("/tasks/history/");
+        HttpResponse<String> response = load("/tasks/history");
+        System.out.println(response.statusCode());
         JsonElement jsonElement = JsonParser.parseString(response.body());
         JsonArray array = jsonElement.getAsJsonArray();
         ArrayList<Task> historyJson = new ArrayList<>();
@@ -282,9 +251,9 @@ public class HttpTaskServerTest {
         String jsonEpic= gson.toJson(testEpic);
         String jsonSub1 = gson.toJson(testSub1);
         String jsonSub2 = gson.toJson(testSub2);
-        put(jsonEpic);
-        put(jsonSub1);
-        put(jsonSub2);
+        put(jsonEpic,"/epictask");
+        put(jsonSub1,"/subtask");
+        put(jsonSub2,"/subtask");
 
         ArrayList<SubTask> listSub= new ArrayList<>();
         listSub.add(testSub1);
@@ -304,5 +273,36 @@ public class HttpTaskServerTest {
 
     }
 
+    HttpResponse<String> load(String path) throws IOException, InterruptedException{
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080" + path);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .GET()
+                .build();
+        return  client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    HttpResponse<String> put(String json,String path ) throws IOException, InterruptedException{
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks" + path);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .POST(HttpRequest.BodyPublishers.ofString(json, StandardCharsets.UTF_8))
+                .build();
+        return   client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    HttpResponse<String> delete(String path) throws IOException, InterruptedException{
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks" + path);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .DELETE()
+                .build();
+        return  client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
 
 }
+

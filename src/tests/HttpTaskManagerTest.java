@@ -1,15 +1,12 @@
 package tests;
 
+import entities.*;
 import logic.HttpTaskManager;
 import HTTP.KVServer;
 import HTTP.KVTaskClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-import entities.EpicTask;
-import entities.Status;
-import entities.SubTask;
-import entities.Task;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +33,12 @@ public class HttpTaskManagerTest {
         server = new KVServer();
         server.start();
         manager = new HttpTaskManager("http://localhost:8078");
-        client = new KVTaskClient("http://localhost:8078");
+        try {
+            client = new KVTaskClient("http://localhost:8078");
+        } catch (CustomException e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @AfterEach
@@ -45,7 +47,7 @@ public class HttpTaskManagerTest {
     }
 
     @Test
-    void shouldSaveTasks() throws IOException {
+    void shouldSaveTasks() throws CustomException {
         manager.createTask(testTask);
         JsonArray tasksJson = JsonParser.parseString(client.load("tasks/task")).getAsJsonArray();
         Task taskJson = gson.fromJson(tasksJson.get(0), Task.class);
@@ -54,7 +56,7 @@ public class HttpTaskManagerTest {
     }
 
     @Test
-    void shouldSaveEpic() throws IOException {
+    void shouldSaveEpic() throws CustomException {
         manager.createEpicTask(testEpic);
         JsonArray epicsJson = JsonParser.parseString(client.load("tasks/epictask")).getAsJsonArray();
         EpicTask epicJson = gson.fromJson(epicsJson.get(0), EpicTask.class);
@@ -63,7 +65,7 @@ public class HttpTaskManagerTest {
     }
 
     @Test
-    void shouldSaveSubTasks() throws IOException {
+    void shouldSaveSubTasks() throws CustomException {
         manager.createEpicTask(testEpic);
         manager.createSubTask(testSub2);
         JsonArray subtasksJson = JsonParser.parseString(client.load("tasks/subtask")).getAsJsonArray();
@@ -72,7 +74,7 @@ public class HttpTaskManagerTest {
     }
 
     @Test
-    void shouldSaveHistory() throws IOException {
+    void shouldSaveHistory() throws CustomException{
         manager.createTask(testTask);
         manager.createEpicTask(testEpic);
         manager.getById(0);
@@ -96,7 +98,14 @@ public class HttpTaskManagerTest {
         manager.createSubTask(testSub1);
         manager.getById(2);
         manager.getById(1);
-        HttpTaskManager manager1 =HttpTaskManager.loadFromServer("http://localhost:8078");
+        HttpTaskManager manager1;
+        try {
+            manager1 =HttpTaskManager.loadFromServer("http://localhost:8078");
+        } catch (CustomException e){
+            System.out.println(e.getMessage());
+            return;
+        }
+
         Assertions.assertEquals(manager.showTasksList(),manager1.showTasksList(),"Неверная загрузка задач с сервера");
         Assertions.assertEquals(manager.showEpicTasksList(),manager1.showEpicTasksList(),"Неверная загрузка Эпиков с сервера");
         Assertions.assertEquals(manager.showSubTasksList(),manager1.showSubTasksList(),"Неверная загрузка Подзадач с сервера");

@@ -11,19 +11,23 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 
 
 public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksManager> {
 
+    String currentDirectory = System.getProperty("user.dir");
 
+    // Указываем имя файла
+    String fileName = "bebra.css";
 
-    String path = "C:\\Users\\EV\\Desktop\\pro\\moe.csv";
+    String path = currentDirectory + File.separator + fileName;
     @BeforeEach
     void create() {
         manager = new FileBackedTasksManager(path);
-        emptyManager = new FileBackedTasksManager("C:\\Users\\EV\\Desktop\\pro\\moe2.csv");
+        emptyManager = new FileBackedTasksManager(currentDirectory + File.separator + "bebra2.css");
         manager.createEpicTask(testEpic);
         manager.createTask(testTask);
         manager.createSubTask(testSub1);

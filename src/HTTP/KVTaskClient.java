@@ -1,6 +1,8 @@
 package HTTP;
 
 
+import entities.CustomException;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,7 +15,14 @@ public class KVTaskClient {
     public String token;
 
     private final HttpClient client;
-    public KVTaskClient(String path) throws IOException {
+    public KVTaskClient(String path) throws CustomException {
+
+
+
+        /*Честно говоря я не разобрался с выбросом исключений, и сделал чудовищ расположенных ниже*/
+
+
+
         this.path = path;
         client = HttpClient.newHttpClient();
         URI url = URI.create(path + "/register");
@@ -25,14 +34,17 @@ public class KVTaskClient {
         try {
 
             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200){
+                throw new CustomException("Недопустимый код состояния ответа");
+            }
             token = response.body();
-        } catch ( InterruptedException e){
-            System.out.println(e.getMessage());
+        }  catch ( InterruptedException | IOException e){
+            throw new CustomException("Проблемы с потоками (-_-)");
         }
 
     }
 
-    public void put(String key,String json) throws IOException{
+    public void put(String key,String json) throws CustomException{
         try {
 
         HttpClient client = HttpClient.newHttpClient();
@@ -44,13 +56,13 @@ public class KVTaskClient {
 
 
             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch ( InterruptedException e){
-            System.out.println(e.getMessage());
+        } catch ( InterruptedException | IOException e){
+            throw new CustomException("Проблемы с потоками (-_-)");
         }
 
     }
 
-    public String load(String key) throws IOException{
+    public String load(String key) throws CustomException {
 
         HttpClient client = HttpClient.newHttpClient();
         URI url = URI.create(path + "/load/" + key + "?API_TOKEN=" + token);
@@ -60,10 +72,12 @@ public class KVTaskClient {
                 .build();
         try {
             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200){
+                throw new CustomException("Недопустимый код состояния ответа");
+            }
             return response.body();
-        } catch ( InterruptedException e){
-            System.out.println(e.getMessage());
-            return null;
+        } catch ( InterruptedException | IOException e){
+            throw new CustomException("Проблемы с потоками (-_-)");
         }
 
     }

@@ -25,7 +25,6 @@ public class KVServer {
     }
 
     private void load(HttpExchange h) throws IOException {
-        // TODO Добавьте получение значения по ключу
         try {
             System.out.println(h.getRequestURI().getPath());
             if (!hasAuth(h)) {
@@ -40,7 +39,13 @@ public class KVServer {
                     h.sendResponseHeaders(400, 0);
                     return;
                 }
-                sendText(h,data.get(key));
+                if (data.containsKey(key) && !data.get(key).isEmpty()){
+                    sendText(h,data.get(key));
+                }
+                else {
+                    System.out.println("Данные по ключу " + key + " не найдены.");
+                    h.sendResponseHeaders(404, 0);
+                }
             } else {
                 System.out.println("/load ждёт GET-запрос, а получил: " + h.getRequestMethod());
                 h.sendResponseHeaders(405, 0);
